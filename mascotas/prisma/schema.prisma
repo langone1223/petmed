@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  passwordHash     String
+  role             String   // "USER" or "VET"
+  
+  // Common fields
+  name             String?
+  surname          String?
+  dni              String?
+  phone            String?
+  address          String?
+  profilePicture   String?  // URL
+  
+  // Vet specific fields
+  licenseNumber    String?
+  specialty        String?
+  yearsOfExperience Int?
+  university       String?
+  bio              String?
+  workplacePhotos  String?  // Comma separated URLs
+  socialMedia      String?  // JSON string or URL
+  termsAccepted    Boolean  @default(false)
+  isVerified       Boolean  @default(false)
+
+  pets             Pet[]    @relation("UserPets")
+  validatedPets    Pet[]    @relation("PetValidator")
+  medicalRecords   MedicalRecord[] @relation("VetRecords")
+  patientLinks       VetPatientLink[]
+  ownerAppointments  Appointment[] @relation("OwnerAppointments")
+  vetAppointments    Appointment[] @relation("VetAppointments")
+  clinicalTemplates  ClinicalTemplate[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Pet {
+  id                 Int      @id @default(autoincrement())
+  ownerId            Int
+  owner              User     @relation("UserPets", fields: [ownerId], references: [id])
+  
+  // Base Data (Owner Declared)
+  name               String
+  species            String
+  breed              String?
+  birthDate          DateTime?
+  sex                String?
+  color              String?
+  photoUrl           String?
+  microchip          String?
+  
+  // Validation States (Vet Confirmed)
+  breedValidated     Boolean @default(false)
+  birthDateValidated Boolean @default(false)
+  allergiesValidated Boolean @default(false)
+  microchipValidated Boolean @default(false)
+  
+  healthStatus       String  @default("SALUDABLE") // SALUDABLE, EN_TRATAMIENTO, CRITICO
+  
+  // Validation Tracking
+  validatedById      Int?
+  validatedBy        User?   @relation("PetValidator", fields: [validatedById], references: [id])
+  validatedAt        DateTime?
+
+  // Declared History (Owner)
+  pastDiseases       String?
+  surgeries          String?
+  knownAllergies     String?
+  currentMedication  String?
+  diet               String?
+  
+  // Symptoms (Owner - Legacy fields, kept for backwards compatibility or general state)
+  currentSymptoms    String?
+  symptomsSince      String?
+  behaviorChanges    String?
+  
+  medicalRecords     MedicalRecord[]
+  ownerReports       OwnerReport[]
+  appointments       Appointment[]
+  patientLinks       VetPatientLink[]
+  accessTokens       PetAccessToken[]
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model OwnerReport {
+  id                 Int      @id @default(autoincrement())
+  petId              Int
+  pet                Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  
+  symptoms           String
+  symptomsSince      String?
+  behaviorChanges    String?
+  
+  createdAt          DateTime @default(now())
+}
+
+model Appointment {
+  id          Int      @id @default(autoincrement())
+  vetId       Int
+  vet         User     @relation("VetAppointments", fields: [vetId], references: [id], onDelete: Cascade)
+  ownerId     Int
+  owner       User     @relation("OwnerAppointments", fields: [ownerId], references: [id], onDelete: Cascade)
+  petId       Int
+  pet         Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  
+  date        DateTime
+  status      String   @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  reason      String?
+  notes       String?  // Notes from the vet (e.g., "Bring vaccine card")
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ClinicalTemplate {
+  id                      Int      @id @default(autoincrement())
+  vetId                   Int
+  vet                     User     @relation(fields: [vetId], references: [id], onDelete: Cascade)
+  
+  title                   String   // e.g., "Consulta Cachorro", "Gastroenteritis"
+  presumptiveDiagnosis    String?
+  confirmedDiagnosis      String?
+  medicationDetails       String?
+  professionalIndications String?
+
+  createdAt               DateTime @default(now())
+}
+
+model VetPatientLink {
+  id        Int      @id @default(autoincrement())
+  vetId     Int
+  vet       User     @relation(fields: [vetId], references: [id], onDelete: Cascade)
+  petId     Int
+  pet       Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([vetId, petId])
+}
+
+model MedicalRecord {
+  id                 Int      @id @default(autoincrement())
+  petId              Int
+  pet                Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  
+  vetId              Int
+  vet                User     @relation("VetRecords", fields: [vetId], references: [id])
+  
+  date               DateTime @default(now())
+  
+  // Clinical Evaluation
+  temperature        String?
+  heartRate          String?
+  respiratoryRate    String?
+  realWeight         String?
+  generalStatus      String?
+  physicalExam       String?
+  
+  // Diagnosis
+  presumptiveDiagnosis String?
+  confirmedDiagnosis   String?
+  
+  // Treatment
+  medicationDetails    String?
+  professionalIndications String?
+  
+  // Vaccines
+  vaccineType        String?
+  vaccineDate        DateTime?
+  nextDose           DateTime?
+  
+  // Deworming
+  dewormingProduct   String?
+  dewormingDate      DateTime?
+  dewormingType      String?
+  
+  // Real Clinical History
+  diagnosedDiseases  String?
+  performedSurgeries String?
+  patientEvolution   String?
+  
+  // Studies (URLs)
+  labResults         String?
+  xRays              String?
+  ultrasounds        String?
+  
+  // Vet Validation Signature
+  digitalSignature   Boolean @default(false)
+
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model PetAccessToken {
+  id        Int      @id @default(autoincrement())
+  petId     Int
+  pet       Pet      @relation(fields: [petId], references: [id], onDelete: Cascade)
+  pin       String   // Visible 6-digit code
+  token     String   @unique // Internal UUID
+  expiresAt DateTime
+  isUsed    Boolean  @default(false)
+  attempts  Int      @default(0) // Max 5 attempts
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  action    String
+  userId    Int
+  userRole  String?  // PRO feature: snapshot of role at the time
+  petId     Int?
+  ipAddress String?  // PRO feature
+  details   String?
+  createdAt DateTime @default(now())
+}
+
+model RateLimit {
+  id           Int      @id @default(autoincrement())
+  ip           String
+  endpoint     String
+  attempts     Int      @default(1)
+  blockedUntil DateTime?
+  updatedAt    DateTime @updatedAt
+  
+  @@unique([ip, endpoint])
+}
+
+model EmailLog {
+  id        Int      @id @default(autoincrement())
+  to        String
+  subject   String
+  status    String   @default("PENDING") // PENDING, SENT, FAILED
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

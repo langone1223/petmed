@@ -1,0 +1,35 @@
+# Resumen del Proyecto: PetMed (Plataforma de Gestión Veterinaria)
+
+## Descripción General
+PetMed es una aplicación web Full-Stack diseñada para conectar a dueños de mascotas con profesionales veterinarios, facilitando la creación y gestión de historiales clínicos reales, confiables y validados. La plataforma utiliza un diseño moderno con efecto "Glassmorphism" y ofrece vistas dinámicas separadas dependiendo del rol del usuario.
+
+## Características y Funciones Principales
+
+### 1. Sistema de Autenticación y Roles
+* **Dos Tipos de Cuenta**: Dueños de Mascotas y Profesionales Veterinarios.
+* **Seguridad**: Registro y login seguros, contraseñas encriptadas con bcrypt, y sesiones JWT a través de NextAuth.
+* **Identificadores Únicos**: A cada usuario se le asigna un ID numérico simple (ej. "1", "2") para facilitar la búsqueda entre clientes y profesionales.
+* **Perfiles Extensibles**: Los veterinarios deben cargar su matrícula, bio y aceptar términos y condiciones.
+
+### 2. Flujo del Dueño de Mascota
+* **Gestión de Mascotas**: Pueden agregar múltiples mascotas especificando datos base y un **Historial Declarado** (enfermedades, alergias, dietas, y síntomas actuales para una consulta).
+* **Transparencia Visual**: Los datos declarados por el dueño se muestran con advertencias de "Sin Validar" hasta que un profesional los verifique.
+* **Mapa en Tiempo Real**: Al iniciar sesión, la plataforma solicita acceso a la ubicación del usuario (Geolocalización) y muestra un mapa de OpenStreetMap con todas las veterinarias reales en un radio de 5km, indicando automáticamente si están Abiertas (🟢) o Cerradas (🔴) basándose en la hora.
+* **Solo Lectura Clínica**: Pueden ver el historial médico de sus mascotas, pero las fichas creadas por profesionales son de "Solo Lectura" e inalterables.
+
+### 3. Flujo del Profesional Veterinario
+* **Privacidad Visual**: No ven el mapa de veterinarias (innecesario para ellos), permitiéndoles concentrarse en la atención.
+* **Buscador de Pacientes**: Ingresan el ID numérico de un dueño para acceder rápidamente a la lista de sus mascotas.
+* **Validación de Datos**: Pueden confirmar la información declarada por el dueño (Raza, Microchip, Alergias, etc.), convirtiendo las etiquetas a "Validado" (Verde).
+* **Ficha Médica Clínica (El Núcleo)**: Un formulario médico profesional y exhaustivo exclusivo para Veterinarios:
+  - Constantes vitales (Temperatura, Frecuencia cardíaca/respiratoria, Peso Real medido).
+  - Examen Físico.
+  - Diagnóstico Presuntivo y Confirmado.
+  - Tratamiento y dosificación.
+* **Firma Digital**: Al guardar una ficha clínica, esta queda sellada permanentemente con el nombre y matrícula del profesional que la atendió.
+
+## Tecnologías Utilizadas
+* **Frontend / Backend**: Next.js (App Router, Server y Client Components).
+* **Base de Datos**: SQLite gestionada a través de Prisma ORM.
+* **Mapa Geográfico**: React-Leaflet conectada a la API de Overpass (OpenStreetMap).
+* **Estilos**: Vanilla CSS puro con variables e implementaciones avanzadas de z-index y animaciones.

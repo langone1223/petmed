@@ -1,0 +1,20 @@
+{
+    "musica": {
+        "generos_favoritos": []
+    },
+    "conduccion": {
+        "velocidad_preferida": "normal"
+    },
+    "conversacion": {
+        "temas_favoritos": [],
+        "nivel_detalle": "normal"
+    },
+    "personalidad": {
+        "humor": "positivo",
+        "energia": "moderada"
+    },
+    "opciones": {
+        "voice_enabled": false,
+        "calendar_enabled": false
+    }
+}

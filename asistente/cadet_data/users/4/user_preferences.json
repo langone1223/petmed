@@ -1,0 +1,36 @@
+{
+    "musica": {
+        "generos_favoritos": [
+            "trap",
+            "pop"
+        ],
+        "artistas_favoritos": [
+            "travis scott",
+            "metro boomin"
+        ]
+    },
+    "conduccion": {
+        "velocidad_preferida": "unknown"
+    },
+    "conversacion": {
+        "temas_favoritos": [],
+        "nivel_detalle": "normal"
+    },
+    "opciones": {
+        "voice_enabled": false,
+        "calendar_enabled": false
+    },
+    "datos_personales": {
+        "hobbies": [
+            "leer",
+            "historia",
+            "finanzas",
+            "inversiones"
+        ],
+        "edad": "15",
+        "ubicacion": "unknown",
+        "metas": [
+            "ser millonario"
+        ]
+    }
+}

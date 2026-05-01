@@ -1,0 +1,26 @@
+{
+    "musica": {
+        "generos_favoritos": [
+            "travis scott",
+            "metro boomin"
+        ]
+    },
+    "conduccion": {
+        "velocidad_preferida": "normal"
+    },
+    "conversacion": {
+        "temas_favoritos": [],
+        "nivel_detalle": "normal"
+    },
+    "personalidad": {
+        "humor": "positivo",
+        "energia": "moderada"
+    },
+    "opciones": {
+        "voice_enabled": true,
+        "calendar_enabled": false
+    },
+    "datos_personales": {
+        "mascotas": "ice"
+    }
+}
