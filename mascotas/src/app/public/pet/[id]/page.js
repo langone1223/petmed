@@ -84,5 +84,6 @@ export default async function PublicPetPage({ params }) {
         </div>
       </div>
     </div>
+    </div>
   );
 }
