@@ -5,7 +5,8 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import PublicPetClient from "./PublicPetClient";
 
 export default async function PublicPetPage({ params }) {
-  const petId = parseInt(params.id);
+  const resolvedParams = await params;
+  const petId = parseInt(resolvedParams.id);
 
   if (isNaN(petId)) {
     return notFound();

@@ -67,8 +67,7 @@ export default function Map() {
     const fetchVets = async (lat, lng) => {
       setStatusMsg('Buscando veterinarias en un radio de 5km...');
       try {
-        const query = `[out:json];nwr(around:4000,${lat},${lng})[amenity=veterinary];out center;`;
-        const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
+        const res = await fetch(`/api/vets/map?lat=${lat}&lng=${lng}`);
         const data = await res.json();
         
         const currentHour = new Date().getHours();
