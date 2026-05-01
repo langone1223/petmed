@@ -32,13 +32,22 @@ export default async function PublicPetPage({ params }) {
   }
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', background: 'var(--bg-color)' }}>
-      <div className="glass-card" style={{ maxWidth: '500px', width: '100%', padding: '30px', borderTop: '5px solid #ef4444' }}>
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-          <i className='bx bxs-ambulance' style={{ fontSize: '48px', color: '#ef4444' }}></i>
-          <h2 style={{ margin: '10px 0 5px 0', color: 'white' }}>Ficha de Emergencia</h2>
-          <p style={{ color: 'var(--text-muted)', margin: 0 }}>Si encontraste a esta mascota, por favor contacta al dueño inmediatamente.</p>
-        </div>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-color)' }}>
+      {/* HEADER */}
+      <div style={{ background: 'rgba(0,0,0,0.5)', padding: '15px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ fontWeight: 'bold', fontSize: '20px', color: '#4ade80' }}>PetMed</div>
+        <a href="/" style={{ background: '#3b82f6', color: 'white', padding: '8px 16px', borderRadius: '24px', textDecoration: 'none', fontWeight: 'bold', fontSize: '14px' }}>
+          Iniciar Sesión / Registrarse
+        </a>
+      </div>
+
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px' }}>
+        <div className="glass-card" style={{ maxWidth: '500px', width: '100%', padding: '30px', borderTop: '5px solid #ef4444' }}>
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <i className='bx bxs-ambulance' style={{ fontSize: '48px', color: '#ef4444' }}></i>
+            <h2 style={{ margin: '10px 0 5px 0', color: 'white' }}>Ficha de Emergencia</h2>
+            <p style={{ color: 'var(--text-muted)', margin: 0 }}>Si encontraste a esta mascota, por favor contacta al dueño inmediatamente.</p>
+          </div>
 
         {isVet && (
           <div style={{ marginBottom: '20px' }}>

@@ -67,7 +67,7 @@ export default function Map() {
     const fetchVets = async (lat, lng) => {
       setStatusMsg('Buscando veterinarias en un radio de 5km...');
       try {
-        const query = `[out:json];node(around:5000,${lat},${lng})[amenity=veterinary];out;`;
+        const query = `[out:json];nwr(around:4000,${lat},${lng})[amenity=veterinary];out center;`;
         const res = await fetch(`https://overpass-api.de/api/interpreter?data=${encodeURIComponent(query)}`);
         const data = await res.json();
         
@@ -100,8 +100,8 @@ export default function Map() {
           return {
             id: el.id,
             name: el.tags?.name || "Veterinaria sin nombre",
-            lat: el.lat,
-            lng: el.lon,
+            lat: el.lat || el.center?.lat,
+            lng: el.lon || el.center?.lon,
             phone: el.tags?.phone || null,
             isOpen,
             statusText

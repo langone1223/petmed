@@ -586,18 +586,6 @@ export default function DashboardClient({ user }) {
                 </button>
               </div>
 
-              {vetTab === 'search' && (
-                <>
-                  <div className="search-bar" style={{ display: 'flex', gap: '10px' }}>
-                    <input type="number" placeholder="Ingresar ID numérico de Usuario..." value={searchId} onChange={e => setSearchId(e.target.value)} style={{ flex: 1 }} />
-                    <button onClick={handleSearch}>Buscar</button>
-                    <button onClick={() => setShowScanner(true)} style={{ background: '#ec4899', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                      <i className='bx bx-qr-scan'></i> Escanear QR
-                    </button>
-                  </div>
-                  {searchError && <p style={{ color: '#ef4444' }}>{searchError}</p>}
-                </>
-              )}
 
               {showScanner && (
                 <QRScanner onScan={handleScan} onClose={() => setShowScanner(false)} />
@@ -632,6 +620,16 @@ export default function DashboardClient({ user }) {
 
               {vetTab === 'patients' && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  
+                  <div style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid #3b82f6', borderRadius: '12px', padding: '15px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <h5 style={{ margin: 0, color: '#3b82f6' }}>Añadir Nuevo Paciente</h5>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <button onClick={() => setShowScanner(true)} style={{ flex: 1, padding: '10px', background: '#3b82f6', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}>
+                        <i className='bx bx-qr-scan' style={{ fontSize: '18px' }}></i> Escanear QR
+                      </button>
+                    </div>
+                  </div>
+
                   {myPatients.length === 0 ? (
                     <p style={{ color: 'var(--text-muted)' }}>Aún no has registrado atenciones clínicas en ninguna mascota.</p>
                   ) : (
